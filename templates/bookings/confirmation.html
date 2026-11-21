@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Booking Confirmed | SkyWay Travels{% endblock %}
+{% block content %}
+<section class="confirmation">
+  <div class="success-icon">✓</div><p class="eyebrow">BOOKING SAVED</p><h1>You're ready to fly!</h1><p>Your demo booking has been saved successfully.</p>
+  <div class="ticket">
+    <div class="ticket-top"><div><small>BOOKING REFERENCE</small><strong>SW{{ booking.id|stringformat:"05d" }}</strong></div><span>✈ SKYWAY</span></div>
+    <div class="ticket-route"><div><small>FROM</small><h2>{{ booking.origin }}</h2></div><span>→</span><div><small>TO</small><h2>{{ booking.destination }}</h2></div></div>
+    <div class="ticket-details"><div><small>PASSENGER</small><strong>{{ booking.full_name }}</strong></div><div><small>FLIGHT</small><strong>{{ booking.airline }} · {{ booking.flight_number }}</strong></div><div><small>DATE</small><strong>{{ booking.travel_date }}</strong></div><div><small>PASSENGERS</small><strong>{{ booking.passengers }}</strong></div><div><small>EMAIL</small><strong>{{ booking.email }}</strong></div><div><small>TOTAL PAID (DEMO)</small><strong>₹{{ booking.total_price }}</strong></div></div>
+  </div>
+  <a href="/" class="btn">Back to home</a>
+</section>
+{% endblock %}

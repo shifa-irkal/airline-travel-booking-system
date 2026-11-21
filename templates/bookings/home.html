@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Find Flights | SkyWay Travels{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy"><p class="eyebrow">TRAVEL MADE SIMPLE</p><h1>Find your next<br><span>great getaway.</span></h1>
+  <p>Compare sample airline fares, choose your flight and book in a few simple steps.</p></div>
+  <div class="plane-art">✈</div>
+</section>
+<section class="search-panel">
+  <h2>Search flights</h2>
+  <form method="get" class="search-grid">
+    <label>From<select name="origin">
+      {% for city in "Bengaluru,Delhi,Mumbai,Hyderabad,Chennai" %}{% endfor %}
+      <option {% if origin == "Bengaluru" %}selected{% endif %}>Bengaluru</option>
+      <option {% if origin == "Delhi" %}selected{% endif %}>Delhi</option>
+      <option {% if origin == "Mumbai" %}selected{% endif %}>Mumbai</option>
+    </select></label>
+    <label>To<select name="destination">
+      <option {% if destination == "Delhi" %}selected{% endif %}>Delhi</option>
+      <option {% if destination == "Bengaluru" %}selected{% endif %}>Bengaluru</option>
+      <option {% if destination == "Mumbai" %}selected{% endif %}>Mumbai</option>
+    </select></label>
+    <label>Departure date<input type="date" name="travel_date" min="{{ today }}" value="{{ travel_date }}"></label>
+    <label>Passengers<select name="passengers">{% for n in "123456789" %}<option value="{{ forloop.counter }}" {% if passengers == forloop.counter %}selected{% endif %}>{{ forloop.counter }} passenger{{ forloop.counter|pluralize }}</option>{% endfor %}</select></label>
+    <button class="btn search-btn" type="submit">Search flights</button>
+  </form>
+</section>
+<section class="results">
+  <div class="section-heading"><div><p class="eyebrow">AVAILABLE OPTIONS</p><h2>Choose your flight</h2></div><span class="muted">{{ flights|length }} flight option{{ flights|length|pluralize }}</span></div>
+  {% if flights %}
+    {% for flight in flights %}
+    <article class="flight-card">
+      <div class="airline"><div class="airline-mark">✈</div><div><strong>{{ flight.airline }}</strong><small>{{ flight.flight_number }} · {{ flight.cabin }}</small></div></div>
+      <div class="flight-time"><strong>{{ flight.depart }}</strong><small>{{ flight.origin }}</small></div>
+      <div class="duration"><span>{{ flight.duration }}</span><div></div><small>Non-stop</small></div>
+      <div class="flight-time"><strong>{{ flight.arrive }}</strong><small>{{ flight.destination }}</small></div>
+      <div class="fare"><small>Per passenger</small><strong>₹{{ flight.fare }}</strong><a class="btn small-btn" href="{% url 'book_flight' flight.id %}?travel_date={{ travel_date }}&passengers={{ passengers }}">Book</a></div>
+    </article>
+    {% endfor %}
+  {% else %}
+    <div class="empty"><span>🧭</span><h3>No flights on this route yet</h3><p>Try Bengaluru–Delhi, Bengaluru–Mumbai, Delhi–Bengaluru or Mumbai–Bengaluru.</p></div>
+  {% endif %}
+</section>
+<section class="features" id="why-us">
+  <div><span>01</span><h3>Compare flights</h3><p>See airlines, flight times and sample fares together.</p></div>
+  <div><span>02</span><h3>Flexible passengers</h3><p>Your fare total updates according to passenger count.</p></div>
+  <div><span>03</span><h3>Easy booking</h3><p>Enter contact details and receive a booking summary.</p></div>
+</section>
+{% endblock %}

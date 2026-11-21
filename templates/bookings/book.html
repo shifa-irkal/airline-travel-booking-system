@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Complete Booking | SkyWay Travels{% endblock %}
+{% block content %}
+<section class="page-intro"><p class="eyebrow">ALMOST THERE</p><h1>Complete your booking</h1><p>Enter passenger contact details to confirm this demo booking.</p></section>
+{% for message in messages %}<div class="notice">{{ message }}</div>{% endfor %}
+<div class="booking-layout">
+  <form method="post" class="form-card">{% csrf_token %}
+    <h2>Passenger details</h2>
+    <label>Full name<input name="full_name" type="text" placeholder="Enter full name" required></label>
+    <label>Email address<input name="email" type="email" placeholder="name@example.com" required></label>
+    <label>Phone number<input name="phone" type="tel" placeholder="10-digit mobile number" required></label>
+    <label>Travel date<input name="travel_date" type="date" min="{{ today }}" value="{{ travel_date }}" required></label>
+    <label>Number of passengers
+      <select name="passengers" id="passengers" data-fare="{{ flight.fare }}">
+        {% for n in "123456789" %}<option value="{{ forloop.counter }}" {% if passengers == forloop.counter|stringformat:"s" %}selected{% endif %}>{{ forloop.counter }} passenger{{ forloop.counter|pluralize }}</option>{% endfor %}
+      </select>
+    </label>
+    <button class="btn full-btn" type="submit">Confirm booking</button>
+  </form>
+  <aside class="summary-card">
+    <p class="eyebrow">YOUR FLIGHT</p><h2>{{ flight.airline }}</h2><p class="muted">{{ flight.flight_number }} · {{ flight.cabin }}</p>
+    <div class="route"><div><strong>{{ flight.depart }}</strong><small>{{ flight.origin }}</small></div><span>→</span><div><strong>{{ flight.arrive }}</strong><small>{{ flight.destination }}</small></div></div>
+    <hr><div class="price-row"><span>Fare × <b id="passenger-count">{{ passengers }}</b></span><strong id="base-total">₹{{ flight.fare }}</strong></div>
+    <div class="price-row"><span>Taxes & fees</span><strong id="tax-total">₹350</strong></div>
+    <div class="price-row grand-total"><span>Total amount</span><strong id="grand-total">₹{{ flight.fare|add:350 }}</strong></div>
+    <p class="tiny">Taxes are estimated at ₹350 per passenger in this demo.</p>
+  </aside>
+</div>
+{% endblock %}
